@@ -7,8 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import AddEditTodoDialog from "@/components/addEditTodoDialog"; // Import the properly capitalized component
+import ThemeToggleButton from "@/components/ThemeToggleButton";
+import {dark} from "@clerk/themes"
+import { useTheme } from "next-themes";
+import AIChatButton from "@/components/AIChatButton";
 
 export default function Navbar() {
+  const {theme} = useTheme()
+
   const [showAddEditTodoDialog, setShowAddEditTodoDialog] = useState(false);
 
   return (
@@ -23,13 +29,16 @@ export default function Navbar() {
             <UserButton
               afterSignOutUrl="/"
               appearance={{
+                baseTheme: (theme === "dark" ? dark : undefined),
                 elements: { avatarBox: { width: "2.5rem", height: "2.5rem" } },
               }}
             />
+            <ThemeToggleButton/>
             <Button onClick={() => setShowAddEditTodoDialog(true)}>
               <Plus size={20} className="mr-2" />
-              Buat Todolist
+              Create Todolist
             </Button>
+            <AIChatButton></AIChatButton>
           </div>
         </div>
       </div>
