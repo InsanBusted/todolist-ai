@@ -1,0 +1,3 @@
+{
+    "extend": ["next/core-webe-vitals", "prettier"]
+}
