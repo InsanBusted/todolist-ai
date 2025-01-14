@@ -2,7 +2,7 @@ import { todoIndex } from "@/lib/db/pinecone";
 import prisma from "@/lib/db/prisma";
 import openai, { getEmbedding } from "@/lib/openai";
 import { auth } from "@clerk/nextjs/server";
-import { ChatCompletionMessage } from "openai/resources/index.mjs";
+import { ChatCompletionMessage, ChatCompletionSystemMessageParam } from "openai/resources/index.mjs";
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 
 export async function POST(req: Request) {
@@ -32,21 +32,29 @@ export async function POST(req: Request) {
         }
     })
 
-    console.log("Relevant Notes not Found: ", relevantTodos)
+    // console.log("Relevant Notes not Found: ", relevantTodos)
 
     const systemMessage: ChatCompletionMessage = {
         role: "assistant",
         content: 
-        "You are an intelligent Todolist app. you answer the user's question based on their existing todos." + 
-        "The relevant todos for this query are:\n" +
-        relevantTodos.map((todo) => `Title: ${todo.title}\nContent: ${todo.content}\nPriority: ${todo.priority}\nStatus: ${todo.status}\nDate: ${todo.createdAt}`).join("\n\n"),
+    "You are an intelligent Todolist app. You answer the user's question based on their existing todos.\n" + 
+    "The relevant todos for this query are:\n" +
+    relevantTodos.map((todo) => 
+        `${todo.title}: ${todo.content}\nPriority: ${todo.priority}\nStatus: ${todo.status}`
+    ).join("\n\n"),
         refusal: ""
     }
+    const aiMessage: ChatCompletionSystemMessageParam = {
+        role: "system",
+        content: "Do not user markdown formatting, * or #",
+    };
+
+    const message = [systemMessage, aiMessage, ...messagesTruncated];
 
     const response = await openai.chat.completions.create({
         model: "gpt-4o",
         stream: true,
-        messages: [systemMessage, ...messagesTruncated]
+        messages: message
     })
 
     const stream = OpenAIStream(response)
