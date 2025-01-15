@@ -37,7 +37,13 @@ export default function Todo({ todo }: TodoProps) {
                         {wasUpdated && " (updated)"}
                     </CardDescription>
                 <CardContent>
-                    <p className="my-5 whitespace-pre-line">{todo.content}</p>
+                {todo.content && 
+                todo.content
+                    .split("\n") // Split content into paragraphs by newline
+                    .slice(0, 3) // Only take the first 2 paragraphs
+                    .map((paragraph, index) => (
+                        <p key={index} className="my-5 whitespace-pre-line">{paragraph}</p>
+                    ))}
                     <p className="whitespace-pre-line">
                         <strong>Prioritas:</strong> {todo.priority}
                     </p>

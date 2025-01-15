@@ -3,7 +3,7 @@ import Todo from "@/components/Todo";
 import prisma from "@/lib/db/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
-import { Status, Todo as TodoModel } from "@prisma/client";
+import {  Todo as TodoModel } from "@prisma/client";
 import HighButton from "@/components/HighButton";
 
 export const metadata: Metadata = {
@@ -21,13 +21,12 @@ export default async function TodosPage() {
   });
   const CompletedTodos: TodoModel[] = await prisma.todo.findMany({
     where: { 
-      userId,
-      status: Status.COMPLETED   // Jika ingin memfilter hanya yang COMPLETED
+      userId,  // Jika ingin memfilter hanya yang COMPLETED
   }
 });
 
   return (
-    <main>
+    <main>z
       <h1 className="font-serif text-3xl mb-4">My Todolist</h1>
       {/* ALL TODOLIST */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mt-4">
