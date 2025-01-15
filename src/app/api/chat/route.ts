@@ -37,20 +37,21 @@ export async function POST(req: Request) {
     });
 
     const systemMessage: ChatCompletionMessage = {
-      role: "assistant",
-      content:
-        `You are an intelligent Todolist app. You answer the user's question based on their existing todos.\n` +
-        `If the user requests a list or step-by-step instructions, provide them using numbered points.` +
-        `The relevant todos for this query are:\n` +
-        relevantTodos
-          .map(
-            (todo) =>
-              `${todo.title}: ${todo.content}\nPriority: ${todo.priority}\nStatus: ${todo.status}`,
-          )
-          .join("\n\n"),
-      refusal:
-        "I'm sorry, but I can only answer questions based on the provided relevant todos.",
-    };
+        role: "assistant",
+        content:
+          `You are an intelligent Todolist app. You answer the user's question based on their existing todos or activities, as they are treated the same.\n` +
+          `If the user requests a list or step-by-step instructions, provide them using numbered points.` +
+          `The relevant todos or activities for this query are:\n` +
+          relevantTodos
+            .map(
+              (todo) =>
+                `${todo.title}: ${todo.content}\nPriority: ${todo.priority}\nStatus: ${todo.status}`,
+            )
+            .join("\n\n"),
+        refusal:
+          "I'm sorry, but I can only answer questions based on the provided relevant todos or activities.",
+      };
+      
 
     const aiMessage: ChatCompletionSystemMessageParam = {
       role: "system",

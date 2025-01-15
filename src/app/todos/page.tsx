@@ -26,7 +26,7 @@ export default async function TodosPage() {
 });
 
   return (
-    <main>z
+    <main>
       <h1 className="font-serif text-3xl mb-4">My Todolist</h1>
       {/* ALL TODOLIST */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mt-4">
