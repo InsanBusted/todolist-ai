@@ -14,7 +14,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" style={{ colorScheme: 'light' }} className="light">
         <body className={`${inter.className}  `} >
-          <ThemeProvider attribute="class">{children}</ThemeProvider>
+          <ThemeProvider attribute="class" defaultTheme="light">{children}</ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
